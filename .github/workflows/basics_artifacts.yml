@@ -1,0 +1,61 @@
+name: Build and Store Aritfacts
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Project
+        run: |
+          mkdir -p output
+          echo "Hello World!" > output/artifact.txt
+          ls -l output/
+          cat output/artifact.txt
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with: 
+          name: my-artifact
+          path: output/
+
+  download:
+    runs-on: ubuntu-latest
+    needs: build
+    steps: 
+      - name: Download Artifact from GitHub Actions
+        uses: actions/download-artifact@v4
+        with: 
+          name: my-artifact
+          path: downloaded-artifact
+
+      - name: Display Artifact Content
+        run: |
+          ls -l downloaded-artifact/
+          cat downloaded-artifact/artifact.txt || echo "File is empty or missing"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
